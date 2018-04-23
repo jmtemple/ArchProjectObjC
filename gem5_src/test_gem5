@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# export LD_LIBRARY_PATH=/usr/local/lib
+# export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
+
+# gcc -o test_pocketsphinx test_pocketsphinx_with_gem5_main.cc -DMODELDIR=\"`pkg-config --variable=modeldir pocketsphinx`\" -L/user/local/lib `pkg-config --cflags --libs pocketsphinx sphinxbase`
+
+THIS_DIR="/mnt/__home__/git/nd/classes/grad_arch/ArchProjectObjC/gem5_src"
+
+gcc -static -o test_pocketsphinx test_pocketsphinx_with_gem5_main.cc -DMODELDIR=\"`pkg-config --variable=modeldir pocketsphinx`\" -I$THIS_DIR/include -I$THIS_DIR/include/sphinxbase -I$THIS_DIR/include/pocketsphinx -L$THIS_DIR/lib -lpocketsphinx -lsphinxbase -lsphinxad -lpthread -lm
+
+./../../gem5/build/X86/gem5.opt ./../../gem5/configs/example/se.py -c ./test_pocketsphinx
+

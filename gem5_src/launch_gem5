@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# export LD_LIBRARY_PATH=/usr/local/lib
+# export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
+
+# gcc -o test_pocketsphinx test_pocketsphinx_with_gem5_main.cc -DMODELDIR=\"`pkg-config --variable=modeldir pocketsphinx`\" -L/user/local/lib `pkg-config --cflags --libs pocketsphinx sphinxbase`
+
+THIS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+# "/mnt/__home__/git/nd/classes/grad_arch/ArchProjectObjC/gem5_src"
+
+
+
+gcc -static -o run_pocketsphinx main.cc -DMODELDIR=\"$THIS_DIR/pocketsphinx/model\" -I$THIS_DIR/include -I$THIS_DIR/include/sphinxbase -I$THIS_DIR/include/pocketsphinx -L$THIS_DIR/lib -lpocketsphinx -lsphinxbase -lsphinxad -lpthread -lm
+
+# iPadMini3 -> A7
+# iPadMini4 -> A8
+# iPhone6s  -> A9
+# iPhone7   -> A10 Fusion
+# IPhone8+  -> A11 Bionic
+
+# Apple A7 chip caches: L1 -> 128KB, L2=1MB, L3=4MB, RAM=1GB, 2 cores
+# Apple A8 chip caches: L1 -> 256KB, L2=1MB, L3=4MB, RAM=1GB, 2 cores
+# Apple A9 chip caches: L1 -> 64KB, L2=3MB, L3=4MB, RAM=2GB, 4 cores
+# Apple A10 Fusion chip caches: L1 -> 64KB, L2=3MB, L3=4MB, RAM=2GB 4 cores
+# Apple A11 Bionic chip chaces: L1 -> 32KB, L2=8MB, L3=None, RAM=3GB, 6 cores
+
+./../../gem5/build/X86/gem5.opt --stats-file=$THIS_DIR/gem5_out/stats.txt ./../../gem5/configs/example/se.py -c ./run_pocketsphinx --options="50"
+
