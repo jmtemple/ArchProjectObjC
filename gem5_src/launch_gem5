@@ -24,5 +24,7 @@ gcc -static -o run_pocketsphinx main.cc -DMODELDIR=\"$THIS_DIR/pocketsphinx/mode
 # Apple A10 Fusion chip caches: L1 -> 64KB, L2=3MB, L3=4MB, RAM=2GB 4 cores
 # Apple A11 Bionic chip chaces: L1 -> 32KB, L2=8MB, L3=None, RAM=3GB, 6 cores
 
-./../../gem5/build/X86/gem5.opt --stats-file=$THIS_DIR/gem5_out/stats.txt ./../../gem5/configs/example/se.py -c ./run_pocketsphinx --options="50"
+# ./../../gem5/build/X86/gem5.opt --stats-file=$THIS_DIR/gem5_out/stats.txt ./../../gem5/configs/example/se.py -c ./run_pocketsphinx --options="50"
+
+./run_pocketsphinx 40
 

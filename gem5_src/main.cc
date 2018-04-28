@@ -24,6 +24,7 @@ int predict(int current_filename, ps_decoder_t* ps)
 
     rv = ps_start_utt(ps);
     while (!feof(fh)) {
+        fprintf(stdout, "processing line ");
 	    size_t nsamp;
 	    nsamp = fread(buf, 2, 512, fh);
 	    rv = ps_process_raw(ps, buf, nsamp, FALSE, FALSE);
@@ -63,7 +64,7 @@ int main(int argc, char** argv)
 		         "-hmm", MODELDIR "/cmusphinx-en-us-8khz-5.2",
 		         "-lm", MODELDIR "/en-us/en-us-phone.lm.bin",
 	    		 "-dict", MODELDIR "/en-us/cmudict.dic",
-                 // "-allphone", "phone.lm",
+                 //"-allphone", "phone.lm",
                  "-feat", "1s_c_d_dd",
                  "-ceplen", "13",
                  "-ncep", "13",
@@ -99,6 +100,7 @@ int main(int argc, char** argv)
 
     int i = 0;
     while(i < max_filename && no_error) {
+        fprintf(stdout, "predicting file ");
         no_error = predict(i, ps) == 0;
         ++i;
     }
