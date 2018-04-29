@@ -1,0 +1,13 @@
+#!/bin/bash
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+GEM5_DIR="${DIR}/../gem5_src/gem5_out/iPadMini3_40_m5out"
+GEM5_MCPAT_PARSER_BIN="${DIR}/../../gem5-mcpat-parser"
+MCPAT_BIN="${DIR}/../../mcpat"
+
+cd ${GEM5_MCPAT_PARSER_BIN}
+
+./compute ${GEM5_DIR}/stats.txt ${GEM5_DIR}/config.ini template.xml configuration.xml gem5-mcpat-parser ./../mcpat/mcpat 0 results.txt
+
+cd ${DIR}
+
