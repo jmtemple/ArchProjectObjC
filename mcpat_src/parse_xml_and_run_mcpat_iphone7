@@ -1,0 +1,30 @@
+#!/bin/bash
+
+GEM5_DIR="./gem5_out"
+MCPAT_DIR="./mcpat_out"
+TMPFILE="template_xeon_iphone7.xml"
+NAME="iPhone7"
+
+
+for DIRPATH in ${GEM5_DIR}/${NAME}*/; do
+    DIRNAME=$(basename "${DIRPATH}")
+
+    echo "Entering ${DIRNAME}"
+
+    if [ ! -d ${MCPAT_DIR}/${DIRNAME} ]; then
+        mkdir ${MCPAT_DIR}/${DIRNAME}
+    fi
+
+    for FPATH in ${DIRPATH}/*.txt; do
+        FNAME=$(basename "${FPATH}")
+
+        echo "    Processing ${FNAME}"
+        # run the parser
+        ./GEM5ToMcPAT.py --quiet --out=${FPATH}-out.xml ${FPATH} ${DIRPATH}/config.json ${TMPFILE} > ${DIRPATH}/log.txt
+
+        # run mcpat
+        ./../../mcpat/mcpat -infile ${FPATH}-out.xml -print_level 5 > ${MCPAT_DIR}/${DIRNAME}/${FNAME}-results.txt
+    done
+    echo "Exiting ${DIRNAME}"
+done
+

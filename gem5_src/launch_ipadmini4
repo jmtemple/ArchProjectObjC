@@ -22,8 +22,8 @@ L3_ASSOC=2
 CACHELINE_SIZE=64
 
 NUM_CPUS=2
-# CPU_TYPE="Deriv03CPU"
-CPU_TYPE="SimpleCPU"
+CPU_TYPE="DerivO3CPU"
+# CPU_TYPE="SimpleCPU"
 
 gcc -static -o run_pocketsphinx main.cc -DMODELDIR=\"${THIS_DIR}/pocketsphinx/model\" -I${THIS_DIR}/include -I${THIS_DIR}/include/sphinxbase -I${THIS_DIR}/include/pocketsphinx -L${THIS_DIR}/lib -lpocketsphinx -lsphinxbase -lsphinxad -lpthread -lm
 
@@ -43,6 +43,6 @@ gcc -static -o run_pocketsphinx main.cc -DMODELDIR=\"${THIS_DIR}/pocketsphinx/mo
 
 for FR in ${FRATES[@]}; do
     OUT_DIR=${THIS_DIR}/gem5_out/${NAME}_${FR}_m5out
-    ./../../gem5/build/X86/gem5.opt --outdir=${OUT_DIR} ./../../gem5/configs/example/se.py --num-cpus=${NUM_CPUS} --cacheline_size=${CACHELINE_SIZE} --mem-size=${MEM_SIZE} --l1d_size=${L1D_SIZE} --l1i_size=${L1I_SIZE} --l1i_assoc=${L1I_ASSOC} --l1d_assoc=${L1D_ASSOC} --l2_size=${L2_SIZE} --l2_assoc=${L2_ASSOC} --l3_size=${L3_SIZE} --l3_assoc=${L3_ASSOC} --caches --l2cache -c ./run_pocketsphinx --options=${FR}
+    ./../../gem5/build/X86/gem5.opt --outdir=${OUT_DIR} ./../../gem5/configs/example/se.py --cpu-type=${CPU_TYPE} --num-cpus=${NUM_CPUS} --cacheline_size=${CACHELINE_SIZE} --mem-size=${MEM_SIZE} --l1d_size=${L1D_SIZE} --l1i_size=${L1I_SIZE} --l1i_assoc=${L1I_ASSOC} --l1d_assoc=${L1D_ASSOC} --l2_size=${L2_SIZE} --l2_assoc=${L2_ASSOC} --l3_size=${L3_SIZE} --l3_assoc=${L3_ASSOC} --caches --l2cache -c ./run_pocketsphinx --options=${FR}
 done
 
