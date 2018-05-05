@@ -7,15 +7,29 @@ import sys
 
 
 def process_file(waveform_file_handle, power_file_path):
+    peak_dynamic = None
+    runtime_dynamic = None
+
     with open(power_file_path, "r") as f:
         for line in f:
+            line_parts = line.split("=")
             if "runtime dynamic" in line.lower():
-                line_parts = line.split("=")
                 assert(len(line_parts) == 2)
-                waveform_file_handle.write("%s\n" % line_parts[1].strip().split(" ")[0])
-                return True
-    print("ERROR: No runtime dynamic line found!")
-    return False
+                # waveform_file_handle.write("%s\n" % line_parts[1].strip().split(" ")[0])
+                runtime_dynamic = float(line_parts[1].strip().split(" ")[0])
+            elif "peak dynamic" in line.lower():
+                assert(len(line_parts) == 2)
+                peak_dynamic = float(line_parts[1].strip().split(" ")[0])
+
+    if peak_dynamic is None:
+        print("ERROR: No peak dynamic line found!")
+        return False
+    if runtime_dynamic is None:
+        print("ERROR: No runtime dynamic line found!")
+        return False
+
+    waveform_file_handle.write("%s\n" % (runtime_dynamic/peak_dynamic))
+    return True
 
 
 def process_directory(waveform_dir, mcpat_dir, d):
